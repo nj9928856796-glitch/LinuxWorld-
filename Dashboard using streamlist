@@ -1,0 +1,65 @@
+import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.express as px
+
+# -------------------------------
+# Dashboard Title
+# -------------------------------
+st.set_page_config(page_title="Dashboard", layout="wide")
+st.title("📊 Streamlit Dashboard Example")
+
+# -------------------------------
+# Sidebar Filters
+# -------------------------------
+st.sidebar.header("Filter Options")
+
+cities = ["Delhi", "Mumbai", "Kolkata", "Bangalore"]
+city = st.sidebar.selectbox("Select City", cities)
+
+year = st.sidebar.slider("Select Year", 2018, 2025, 2023)
+
+# -------------------------------
+# Sample Data
+# -------------------------------
+np.random.seed(42)
+data = pd.DataFrame({
+    "Month": ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+    "Sales": np.random.randint(200, 1000, 12),
+    "Profit": np.random.randint(50, 500, 12)
+})
+
+# -------------------------------
+# KPI Cards
+# -------------------------------
+col1, col2, col3 = st.columns(3)
+col1.metric("Total Sales", f"₹ {data['Sales'].sum()}")
+col2.metric("Total Profit", f"₹ {data['Profit'].sum()}")
+col3.metric("Average Sales", f"₹ {round(data['Sales'].mean(), 2)}")
+
+# -------------------------------
+# Graphs Section
+# -------------------------------
+st.subheader(f"📈 Sales & Profit Analysis ({city}, {year})")
+
+colA, colB = st.columns(2)
+
+# Line Chart
+fig_line = px.line(data, x="Month", y="Sales", title="Monthly Sales")
+colA.plotly_chart(fig_line, use_container_width=True)
+
+# Bar Chart
+fig_bar = px.bar(data, x="Month", y="Profit", title="Monthly Profit", color="Profit")
+colB.plotly_chart(fig_bar, use_container_width=True)
+
+# -------------------------------
+# Table Section
+# -------------------------------
+st.subheader("📋 Data Table")
+st.dataframe(data, use_container_width=True)
+
+# -------------------------------
+# Footer
+# -------------------------------
+st.markdown("---")
+st.markdown("Made with ❤️ using **Streamlit**")
