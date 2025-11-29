@@ -1,0 +1,10 @@
+import shutil
+
+source = input("Enter source file path: ")
+destination = input("Enter destination path: ")
+
+try:
+    shutil.copy(source, destination)
+    print("File transferred successfully!")
+except Exception as e:
+    print("Error:", e)
