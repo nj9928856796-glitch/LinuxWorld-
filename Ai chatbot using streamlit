@@ -1,0 +1,43 @@
+import streamlit as st
+
+st.set_page_config(page_title="AI Chatbot", page_icon="🤖", layout="wide")
+
+st.title("🤖 AI Chatbot Using Streamlit")
+st.write("Ask me anything...")
+
+# Chat history
+if "history" not in st.session_state:
+    st.session_state.history = []
+
+# Simple rule-based AI responses
+def get_response(user_input):
+    user_input = user_input.lower()
+
+    if "hello" in user_input or "hi" in user_input:
+        return "Hello! How can I help you today?"
+    if "your name" in user_input:
+        return "I am a simple AI chatbot created in Streamlit!"
+    if "how are you" in user_input:
+        return "I'm just code, but I'm running perfectly fine 😄"
+    if "bye" in user_input:
+        return "Goodbye! Have a great day! 👋"
+    
+    # default response
+    return "I didn't understand that, but I'm learning! 😊"
+
+# Input box
+user_input = st.text_input("You:", "")
+
+if st.button("Send"):
+    if user_input.strip() != "":
+        response = get_response(user_input)
+        st.session_state.history.append(("You", user_input))
+        st.session_state.history.append(("Bot", response))
+
+# Display chat history
+st.write("### 💬 Chat History")
+for sender, msg in st.session_state.history:
+    if sender == "You":
+        st.markdown(f"**🧑 You:** {msg}")
+    else:
+        st.markdown(f"**🤖 Bot:** {msg}")
