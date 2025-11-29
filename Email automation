@@ -1,0 +1,48 @@
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
+
+# Sender and Receiver
+EMAIL_ADDRESS = "youremail@gmail.com"
+EMAIL_PASSWORD = "YOUR_APP_PASSWORD"
+TO_EMAIL = "receiver@example.com"
+
+# Create email
+msg = MIMEMultipart()
+msg["From"] = EMAIL_ADDRESS
+msg["To"] = TO_EMAIL
+msg["Subject"] = "Automated Email from Python"
+
+# Body (HTML supported)
+html = """
+<h2>Hello from Python!</h2>
+<p>This is an <b>automated email</b> sent using a Python script.</p>
+"""
+
+msg.attach(MIMEText(html, "html"))
+
+# Attach file (optional)
+file_path = "report.pdf"   # change file name
+try:
+    with open(file_path, "rb") as attachment:
+        file_part = MIMEBase("application", "octet-stream")
+        file_part.set_payload(attachment.read())
+        encoders.encode_base64(file_part)
+        file_part.add_header(
+            "Content-Disposition",
+            f"attachment; filename={file_path}",
+        )
+        msg.attach(file_part)
+except FileNotFoundError:
+    print("Attachment not found. Sending without file.")
+
+# Send email
+server = smtplib.SMTP("smtp.gmail.com", 587)
+server.starttls()
+server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+server.send_message(msg)
+server.quit()
+
+print("Email sent successfully!")
