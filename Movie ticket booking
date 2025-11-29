@@ -1,0 +1,49 @@
+movies = {
+    1: {"name": "Avengers: Endgame", "price": 250, "seats": 50},
+    2: {"name": "KGF Chapter 2", "price": 200, "seats": 40},
+    3: {"name": "Pathaan", "price": 180, "seats": 30}
+}
+
+print("===== Welcome to Python Movie Ticket Booking =====")
+
+while True:
+    print("\n---- Movie List ----")
+    for mid, info in movies.items():
+        print(f"{mid}. {info['name']}  (Price: ₹{info['price']}  | Seats Left: {info['seats']})")
+
+    choice = int(input("\nSelect Movie (1-3) or 0 to Exit: "))
+
+    if choice == 0:
+        print("Thank you for visiting!")
+        break
+
+    if choice not in movies:
+        print("Invalid choice! Try again.")
+        continue
+
+    movie = movies[choice]
+
+    print(f"\nYou selected: {movie['name']}")
+    print("Ticket Price: ₹", movie['price'])
+    print("Available Seats:", movie['seats'])
+
+    tickets = int(input("How many tickets you want to book? "))
+
+    if tickets <= 0:
+        print("Invalid number of tickets!")
+        continue
+
+    if tickets > movie['seats']:
+        print("Not enough seats available!")
+        continue
+
+    # Update seat count
+    movie['seats'] -= tickets
+
+    total = tickets * movie['price']
+    print("\n===== Booking Successful! =====")
+    print("Movie Name:", movie['name'])
+    print("Tickets Booked:", tickets)
+    print("Total Amount: ₹", total)
+    print("Seats Left Now:", movie['seats'])
+    print("Enjoy your movie! 🍿")
