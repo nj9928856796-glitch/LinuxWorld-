@@ -1,0 +1,19 @@
+import random
+
+print("🎯 Welcome to Number Guessing Game!")
+print("I am thinking of a number between 1 to 100...")
+
+secret = random.randint(1, 100)
+attempts = 0
+
+while True:
+    guess = int(input("Enter your guess: "))
+    attempts += 1
+
+    if guess < secret:
+        print("Too Low! Try again.")
+    elif guess > secret:
+        print("Too High! Try again.")
+    else:
+        print(f"🎉 Correct! You guessed the number in {attempts} attempts.")
+        break
